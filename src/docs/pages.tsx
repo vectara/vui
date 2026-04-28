@@ -10,6 +10,7 @@ import { chat } from "./pages/chat";
 import { checkbox } from "./pages/checkbox";
 import { code } from "./pages/code";
 import { codeEditor } from "./pages/codeEditor";
+import { complexConfigurationButton } from "./pages/complexConfigurationButton";
 import { copyButton } from "./pages/copyButton";
 import { datePicker } from "./pages/datePicker";
 import { drawer } from "./pages/drawer";
@@ -132,7 +133,17 @@ export const categories: Category[] = [
   },
   {
     name: "Controls",
-    pages: [button, copyButton, link, topicButton, menu, optionsButton, optionsList, searchSelect]
+    pages: [
+      button,
+      complexConfigurationButton,
+      copyButton,
+      link,
+      topicButton,
+      menu,
+      optionsButton,
+      optionsList,
+      searchSelect
+    ]
   },
   {
     name: "Utils",

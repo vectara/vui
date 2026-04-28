@@ -21,6 +21,7 @@ import { ChatTurn, ChatStyle, ChatLanguage } from "./chat/types";
 import { VuiChat } from "./chat/Chat";
 import { VuiCode } from "./code/Code";
 import { CodeLanguage } from "./code/types";
+import { VuiComplexConfigurationButton } from "./complexConfigurationButton/ComplexConfigurationButton";
 import { VuiContextProvider } from "./context/Context";
 import { VuiCopyButton } from "./copyButton/CopyButton";
 import { VuiDatePicker } from "./datePicker/DatePicker";
@@ -192,6 +193,7 @@ export {
   VuiCheckbox,
   VuiCode,
   VuiCodeEditor,
+  VuiComplexConfigurationButton,
   VuiContextProvider,
   VuiCopyButton,
   VuiDatePicker,

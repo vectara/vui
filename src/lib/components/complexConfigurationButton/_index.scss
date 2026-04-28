@@ -1,0 +1,17 @@
+.vuiComplexConfigurationButton {
+  width: 100%;
+  border: 1px solid var(--vui-color-primary-highlight-shade);
+  padding: $sizeS $sizeM;
+  border-radius: $sizeXs;
+  transition: box-shadow $transitionSpeed, border-color $transitionSpeed;
+
+  &:hover:not(:disabled) {
+    border-color: var(--vui-color-primary-shade);
+    box-shadow: $shadowLargeEnd;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
