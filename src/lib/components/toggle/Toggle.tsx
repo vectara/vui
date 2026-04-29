@@ -5,6 +5,9 @@ import { VuiText } from "../typography/Text";
 
 type Props = {
   id?: string;
+  // When `undefined`, the toggle renders in an indeterminate "unset" state. Native checkboxes
+  // never emit indeterminate from `onChange` — callers that want to return to the unset state
+  // must reset their stored value to `undefined` themselves.
   checked?: boolean;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   label?: string;
@@ -12,7 +15,6 @@ type Props = {
 
 export const VuiToggle = ({ id, checked, onChange, label, ...rest }: Props) => {
   let labelId;
-
   const inputProps: Record<string, string> = {};
 
   if (label) {
@@ -25,9 +27,12 @@ export const VuiToggle = ({ id, checked, onChange, label, ...rest }: Props) => {
       <VuiFlexItem grow={false}>
         <label className="vuiToggle" {...rest}>
           <input
+            ref={(el) => {
+              if (el) el.indeterminate = checked === undefined;
+            }}
             className="vuiToggle__input"
             type="checkbox"
-            checked={checked}
+            checked={checked ?? false}
             onChange={onChange}
             id={id}
             {...inputProps}
