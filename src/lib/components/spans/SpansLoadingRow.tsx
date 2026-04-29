@@ -6,7 +6,6 @@ import { VuiTextColor } from "../typography/TextColor";
 
 type Props = {
   colSpan: number;
-  // Indent the loading row to align with where the children would render.
   depth: number;
   indentSize: number;
   message?: React.ReactNode;

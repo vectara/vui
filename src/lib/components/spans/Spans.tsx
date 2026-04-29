@@ -125,8 +125,6 @@ export const VuiSpans = <T extends SpansRow>({
     [expandedIds, onExpandedIdsChange, onExpand]
   );
 
-  // Reuse VuiTable's base styles (padding, borders, hover, fluid). `vuiSpans`
-  // remains as a hook for spans-specific overrides.
   const classes = classNames("vuiTable", "vuiSpans", className, {
     "vuiTable--fluid": fluid
   });
