@@ -17,7 +17,7 @@ export const Toggle = () => {
           <VuiToggle checked={maybeChecked} onChange={(e) => setMaybeChecked(e.target.checked)} label="Auto-detect (unset by default)" />
         </VuiFlexItem>
         <VuiFlexItem grow={false}>
-          <VuiButtonSecondary size="s" onClick={() => setMaybeChecked(undefined)}>
+          <VuiButtonSecondary color="neutral" size="s" onClick={() => setMaybeChecked(undefined)}>
             Reset
           </VuiButtonSecondary>
         </VuiFlexItem>
