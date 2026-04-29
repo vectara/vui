@@ -28,6 +28,15 @@ $buttonWidth: $toggleWidth * 0.75 - ($buttonOffset * 2);
   &:checked + .vuiToggle__button:before {
     transform: translateX($toggleWidth - $buttonWidth - ($buttonOffset * 2));
   }
+
+  // Indeterminate ("unset") state: knob centered, lighter background to read as inactive.
+  &:indeterminate + .vuiToggle__button {
+    background-color: var(--vui-color-light-shade);
+  }
+
+  &:indeterminate + .vuiToggle__button:before {
+    transform: translateX(($toggleWidth - $buttonWidth - ($buttonOffset * 2)) * 0.5);
+  }
 }
 
 .vuiToggle__button {
