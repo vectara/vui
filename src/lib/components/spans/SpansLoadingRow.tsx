@@ -14,8 +14,8 @@ type Props = {
 
 export const VuiSpansLoadingRow = ({ colSpan, depth, indentSize, message = "Loading…" }: Props) => {
   return (
-    <tr className="vuiSpansLoadingRow vuiSpansRow--inert">
-      <td colSpan={colSpan} className="vuiSpansLoadingRow__cell">
+    <tr className="vuiSpansLoadingRow vuiTableRow--inert">
+      <td colSpan={colSpan}>
         <div className="vuiSpansLoadingRow__inner" style={{ paddingLeft: depth * indentSize }}>
           <VuiFlexContainer alignItems="center" spacing="xs">
             <VuiFlexItem grow={false}>
