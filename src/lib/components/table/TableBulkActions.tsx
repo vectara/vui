@@ -37,6 +37,7 @@ export const VuiTableBulkActions = <T extends Row>({ selectedRows, actions }: Pr
           <VuiButtonSecondary
             color="neutral"
             size="m"
+            data-testid="bulkActionsMenuButton"
             icon={
               <VuiIcon>
                 <BiCaretDown />
