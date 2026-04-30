@@ -24,6 +24,7 @@ import { image } from "./pages/image";
 import { infoList } from "./pages/infoList";
 import { infoMenu } from "./pages/infoMenu";
 import { infoTable } from "./pages/infoTable";
+import { kvTable } from "./pages/kvTable";
 import { inProgress } from "./pages/inProgress";
 import { input } from "./pages/input";
 import { itemsInput } from "./pages/itemsInput";
@@ -88,7 +89,7 @@ export const categories: Category[] = [
   },
   {
     name: "Info",
-    pages: [table, spans, infoTable, infoList, statList, list, pagination]
+    pages: [table, spans, infoTable, kvTable, infoList, statList, list, pagination]
   },
   {
     name: "Layout",
