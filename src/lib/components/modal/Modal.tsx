@@ -75,6 +75,16 @@ export const VuiModal = ({
     }, 0);
   };
 
+  // Handle outside clicks, but ignore clicks on notifications.
+  const handleClickOutside = (event: Event) => {
+    const target = event.target as HTMLElement;
+    // Check if the click is within a notification.
+    if (target.closest("[data-awareness='notification']")) {
+      return;
+    }
+    onCloseDelayed();
+  };
+
   const containerClasses = classNames("vuiModalContainer", {
     "vuiModalContainer-isLoaded": showTransition
   });
@@ -87,7 +97,7 @@ export const VuiModal = ({
         <VuiScreenBlock key={key} type="modal" isHidden={!isOpen}>
           <FocusOn
             onEscapeKey={onCloseDelayed}
-            onClickOutside={canClickOutsideToClose ? onCloseDelayed : undefined}
+            onClickOutside={canClickOutsideToClose ? handleClickOutside : undefined}
             // Enable manual focus return to work.
             returnFocus={false}
             // Enable focus on contents when it's open,

@@ -218,6 +218,20 @@ export const PrimaryDrawer = () => {
             that the focus management and scroll locking still work as expected.
           </p>
         </VuiText>
+
+        <VuiSpacer size="m" />
+
+        <VuiButtonSecondary
+          color="primary"
+          onClick={() => {
+            addNotification({
+              color: "primary",
+              message: "Just some information, FYI"
+            });
+          }}
+        >
+          Add notification
+        </VuiButtonSecondary>
       </VuiModal>
 
       <VuiNotifications />
