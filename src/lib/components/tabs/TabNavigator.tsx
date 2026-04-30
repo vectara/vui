@@ -10,9 +10,10 @@ import { BiDotsVertical } from "react-icons/bi";
 type Props = {
   routes: TabRoute[];
   popover?: Omit<PopoverProps, "header" | "isOpen" | "setIsOpen" | "button" | "children" | "padding">;
+  "data-testid"?: string;
 };
 
-export const VuiTabsNavigator = ({ routes, popover }: Props) => {
+export const VuiTabsNavigator = ({ routes, popover, ...rest }: Props) => {
   const { getPath } = useVuiContext();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +30,7 @@ export const VuiTabsNavigator = ({ routes, popover }: Props) => {
       isOpen={isOpen}
       setIsOpen={() => setIsOpen(!isOpen)}
       button={
-        <button className="vuiTabsNavigatorButton">
+        <button className="vuiTabsNavigatorButton" {...rest}>
           <div className="vuiTabsNavigatorButton__inner">
             <VuiIcon size="xs">
               <BiDotsVertical />
