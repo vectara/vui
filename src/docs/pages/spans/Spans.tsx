@@ -32,7 +32,7 @@ export const Spans = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isHeaderSticky, setIsHeaderSticky] = useState(false);
-  const [fluid, setFluid] = useState(false);
+  const [fluid, setFluid] = useState(true);
 
   const [rows, setRows] = useState<FakeSpan[]>(ROOT_SPANS);
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set(["wf-1"]));
