@@ -6,6 +6,7 @@ import { VuiTextColor } from "../typography/TextColor";
 
 type Props = {
   colSpan: number;
+  // Indent the loading row to align with where the children would render.
   depth: number;
   indentSize: number;
   message?: React.ReactNode;
@@ -13,8 +14,8 @@ type Props = {
 
 export const VuiSpansLoadingRow = ({ colSpan, depth, indentSize, message = "Loading…" }: Props) => {
   return (
-    <tr className="vuiSpansLoadingRow vuiTableRow--inert">
-      <td colSpan={colSpan}>
+    <tr className="vuiSpansLoadingRow vuiSpansRow--inert">
+      <td colSpan={colSpan} className="vuiSpansLoadingRow__cell">
         <div className="vuiSpansLoadingRow__inner" style={{ paddingLeft: depth * indentSize }}>
           <VuiFlexContainer alignItems="center" spacing="xs">
             <VuiFlexItem grow={false}>

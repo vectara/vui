@@ -3,7 +3,7 @@ import { BiChevronDown, BiChevronRight } from "react-icons/bi";
 import { VuiIcon } from "../icon/Icon";
 import { VuiIconButton } from "../button/IconButton";
 import { Column, Row } from "../table/types";
-import { VuiTableCell } from "../table/TableCell";
+import { VuiSpansCell } from "./SpansCell";
 
 // Cap visual indentation at this depth so the first column doesn't overflow
 // for very deep traces. `aria-level` continues to reflect the true depth.
@@ -62,8 +62,9 @@ export const VuiSpansRow = <T extends Row>({
     >
       {columns.map((column, columnIndex) => {
         const { name, render, className: columnClassName, testId } = column;
-        const cellClasses = classNames(columnClassName, {
-          "vuiTableCell--truncate": column.truncate
+        const cellClasses = classNames("vuiSpansCellWrapper", columnClassName, {
+          "vuiSpansCellWrapper--first": columnIndex === 0,
+          "vuiSpansCellWrapper--truncate": column.truncate
         });
         const cellContent = render ? render(row, rowIndex) : (row as any)[name];
 
@@ -90,7 +91,7 @@ export const VuiSpansRow = <T extends Row>({
                     <span className="vuiSpansCell__chevronPlaceholder" aria-hidden="true" />
                   )}
                 </div>
-                <VuiTableCell column={column}>{cellContent}</VuiTableCell>
+                <VuiSpansCell>{cellContent}</VuiSpansCell>
               </div>
             </td>
           );
@@ -103,7 +104,7 @@ export const VuiSpansRow = <T extends Row>({
             className={cellClasses}
             data-testid={typeof testId === "function" ? testId(row) : testId}
           >
-            <VuiTableCell column={column}>{cellContent}</VuiTableCell>
+            <VuiSpansCell>{cellContent}</VuiSpansCell>
           </td>
         );
       })}

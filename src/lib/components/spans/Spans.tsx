@@ -5,9 +5,9 @@ import { VuiFlexItem } from "../flex/FlexItem";
 import { VuiSpinner } from "../spinner/Spinner";
 import { VuiText } from "../typography/Text";
 import { VuiTableContent } from "../table/TableContent";
-import { VuiTableHeaderCell } from "../table/TableHeaderCell";
 import { buildAndFlattenSpans } from "./buildAndFlattenSpans";
 import { VuiSpansRow } from "./SpansRow";
+import { VuiSpansHeaderCell } from "./SpansHeaderCell";
 import { VuiSpansLoadingRow } from "./SpansLoadingRow";
 import { SpansRow } from "./types";
 
@@ -125,8 +125,8 @@ export const VuiSpans = <T extends SpansRow>({
     [expandedIds, onExpandedIdsChange, onExpand]
   );
 
-  const classes = classNames("vuiTable", "vuiSpans", className, {
-    "vuiTable--fluid": fluid
+  const classes = classNames("vuiSpans", className, {
+    "vuiSpans--fluid": fluid
   });
 
   let tbodyContent;
@@ -185,7 +185,7 @@ export const VuiSpans = <T extends SpansRow>({
   }
 
   return (
-    <div className="vuiTableWrapper" data-testid={dataTestId}>
+    <div className="vuiSpansWrapper" data-testid={dataTestId}>
       <table className={classes} role="treegrid">
         <thead className={isHeaderSticky ? "vuiSpansStickyHeader" : undefined}>
           <tr role="row">
@@ -194,7 +194,7 @@ export const VuiSpans = <T extends SpansRow>({
               const styles = width ? { width } : undefined;
               return (
                 <th key={name} role="columnheader" style={styles}>
-                  <VuiTableHeaderCell column={column} sortDirection="none" />
+                  <VuiSpansHeaderCell column={column} />
                 </th>
               );
             })}
