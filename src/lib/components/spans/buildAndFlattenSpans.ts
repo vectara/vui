@@ -1,0 +1,100 @@
+import { SpansRow } from "./types";
+
+export type FlatSpan<T> = {
+  row: T;
+  id: string;
+  parentId: string | null;
+  depth: number;
+  // True if either `row.hasChildren === true` (lazy hint) or the span actually
+  // has children present in the rows list. Drives whether to render a chevron.
+  hasChildren: boolean;
+  // True if the children are actually present in the rows list. Distinguishes
+  // a loaded subtree from a lazy hint that still needs a fetch.
+  hasLoadedChildren: boolean;
+  // 1-based position among siblings — used for aria-posinset.
+  posInSet: number;
+  // Total siblings — used for aria-setsize.
+  setSize: number;
+};
+
+export type IdAccessor<T> = (row: T) => string;
+export type ParentAccessor<T> = (row: T) => string | null;
+
+// Flattens a list of rows (linked by `parentId`) into a render-ordered, depth-tagged array,
+// showing only visible nodes based on `expandedIds`. The render layer maps this 1:1 to <tr>s.
+// Orphans (rows with missing parents) are dropped. Cycles are avoided using an ancestor set.
+export const buildAndFlattenSpans = <T extends SpansRow>(
+  rows: T[],
+  expandedIds: Set<string>,
+  getId: IdAccessor<T>,
+  getParentId: ParentAccessor<T>
+): FlatSpan<T>[] => {
+  // First pass: collect every known id so we can detect orphans below.
+  const allIds = new Set<string>();
+  for (const row of rows) {
+    allIds.add(getId(row));
+  }
+
+  // Group rows by their parent id, with top-level rows under a sentinel key.
+  // The sentinel can't collide with a real id because it contains spaces.
+  const ROOT_KEY = " __VuiSpansRoot__ ";
+  const childrenByParent = new Map<string, T[]>();
+
+  for (const row of rows) {
+    const parentId = getParentId(row);
+    // Drop orphans: parent id set but not present in the rows list.
+    if (parentId !== null && !allIds.has(parentId)) continue;
+    const key = parentId === null ? ROOT_KEY : parentId;
+    const list = childrenByParent.get(key);
+    if (list) {
+      list.push(row);
+    } else {
+      childrenByParent.set(key, [row]);
+    }
+  }
+
+  const result: FlatSpan<T>[] = [];
+
+  // Recursive depth-first walk. `ancestors` carries the chain of ids from the
+  // root down to (but not including) the current row, used to detect cycles.
+  const walk = (parentKey: string, parentId: string | null, depth: number, ancestors: Set<string>) => {
+    const siblings = childrenByParent.get(parentKey);
+    if (!siblings) return;
+    siblings.forEach((row, index) => {
+      const id = getId(row);
+      // Break cycle: this id appears earlier in its own ancestor chain.
+      if (ancestors.has(id)) return;
+
+      const ownChildren = childrenByParent.get(id);
+      const ownChildCount = ownChildren ? ownChildren.length : 0;
+      const hasLoadedChildren = ownChildCount > 0;
+      // The chevron should appear if either we already have children to show
+      // or the row is hinting that lazily-loadable children exist.
+      const hasChildren = row.hasChildren || hasLoadedChildren;
+
+      result.push({
+        row,
+        id,
+        parentId,
+        depth,
+        hasChildren,
+        hasLoadedChildren,
+        posInSet: index + 1,
+        setSize: siblings.length
+      });
+
+      // Only descend if the user has expanded this row AND there's something
+      // loaded to descend into. The lazy-only case (`hasChildren` but
+      // `!hasLoadedChildren`) is handled by the loading row in the render
+      // layer, not here.
+      if (hasChildren && expandedIds.has(id) && ownChildCount > 0) {
+        const nextAncestors = new Set(ancestors);
+        nextAncestors.add(id);
+        walk(id, id, depth + 1, nextAncestors);
+      }
+    });
+  };
+
+  walk(ROOT_KEY, null, 0, new Set());
+  return result;
+};

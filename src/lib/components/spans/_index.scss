@@ -1,0 +1,110 @@
+$spansChevronWidth: 24px;
+
+.vuiSpansWrapper {
+  width: 100%;
+  position: relative;
+}
+
+.vuiSpans {
+  width: 100%;
+  table-layout: fixed;
+
+  thead {
+    border-bottom: 1px solid var(--vui-color-border-medium);
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--vui-color-border-light);
+
+    &:not(.vuiSpansRow--inert):hover {
+      background-color: rgba(var(--vui-color-light-shade-rgb), 0.25);
+    }
+
+    &:last-child {
+      border-bottom: 1px solid var(--vui-color-border-medium);
+    }
+  }
+
+  th {
+    font-size: $fontSizeStandard;
+    font-weight: $fontWeightBold;
+    padding: $sizeXxs;
+    text-align: left;
+  }
+
+  td {
+    font-size: $fontSizeStandard;
+    padding: $sizeXxs;
+    vertical-align: middle;
+    word-break: break-word;
+  }
+}
+
+.vuiSpans--fluid {
+  table-layout: auto;
+}
+
+// First column: depth-indent + chevron + content laid out in a row.
+.vuiSpansCell__indent {
+  display: flex;
+  align-items: center;
+  gap: $sizeXxs;
+  // padding-left set inline based on depth.
+}
+
+.vuiSpansCell__chevron {
+  flex: 0 0 auto;
+  width: $spansChevronWidth;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vuiSpansCell__chevronPlaceholder {
+  display: inline-block;
+  width: $spansChevronWidth;
+  height: 1px; // Reserves horizontal space; height irrelevant.
+}
+
+.vuiSpansCell {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.vuiSpansCellWrapper--truncate {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.vuiSpansHeaderCell {
+  display: flex;
+  align-items: center;
+  padding: $sizeXxs;
+}
+
+// Sticky header — same treatment as VuiTable.
+.vuiSpansStickyHeader {
+  position: sticky;
+  top: 0;
+  background-color: var(--vui-color-empty-shade);
+  z-index: 1;
+}
+
+// Loading row injected under a parent during lazy fetch.
+.vuiSpansLoadingRow {
+  background-color: rgba(var(--vui-color-light-shade-rgb), 0.15);
+}
+
+.vuiSpansLoadingRow__cell {
+  padding: $sizeXxs !important;
+}
+
+.vuiSpansLoadingRow__inner {
+  display: flex;
+  align-items: center;
+  // padding-left set inline based on depth.
+}

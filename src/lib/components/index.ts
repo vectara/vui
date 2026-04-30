@@ -97,6 +97,8 @@ import { VuiStepsVertical, StepsVertical, StepVerticalStatus } from "./stepsVert
 import { SKELETON_COLOR, VuiSkeleton } from "./skeleton/Skeleton";
 import { VuiSummary, VuiSummaryCitation } from "./summary";
 import { VuiTable } from "./table/Table";
+import { VuiSpans } from "./spans/Spans";
+import { SpansRow } from "./spans/types";
 import { VuiTab } from "./tabs/Tab";
 import { VuiTabbedRoutes } from "./tabs/TabbedRoutes";
 import { VuiTabs } from "./tabs/Tabs";
@@ -140,6 +142,7 @@ export type {
   SearchSuggestion,
   Sections,
   SectionItem,
+  SpansRow,
   Stat,
   StepStatus,
   StepSize,
@@ -245,6 +248,7 @@ export {
   VuiSimpleCard,
   VuiSimpleGrid,
   VuiSpacer,
+  VuiSpans,
   VuiSpinner,
   VuiStat,
   VuiStatList,

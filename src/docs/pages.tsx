@@ -57,6 +57,7 @@ import { summary } from "./pages/summary";
 import { skeleton } from "./pages/skeleton";
 import { superCheckboxGroup } from "./pages/superCheckboxGroup";
 import { superRadioGroup } from "./pages/superRadioGroup";
+import { spans } from "./pages/spans";
 import { table } from "./pages/table";
 import { tabs } from "./pages/tabs";
 import { text } from "./pages/text";
@@ -87,7 +88,7 @@ export const categories: Category[] = [
   },
   {
     name: "Info",
-    pages: [table, infoTable, infoList, statList, list, pagination]
+    pages: [table, spans, infoTable, infoList, statList, list, pagination]
   },
   {
     name: "Layout",
