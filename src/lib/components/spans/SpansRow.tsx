@@ -42,7 +42,7 @@ export const VuiSpansRow = <T extends Row>({
   const { className: decoratorClassName, ...restDecoratorAttrs } = decoratorAttrs;
 
   const rowClassName = classNames("vuiSpansRow", decoratorClassName, {
-    "vuiSpansRow--expanded": hasChildren && isExpanded,
+    "vuiSpansRow-isExpanded": hasChildren && isExpanded,
     "vuiSpansRow--leaf": !hasChildren
   });
 

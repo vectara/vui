@@ -21,9 +21,28 @@ describe("buildAndFlattenSpans", () => {
       { id: "a-1", parentId: "a" },
       { id: "a-2", parentId: "a" }
     ];
-    const result = flatten(rows);
-    expect(result.map((r) => r.id)).toEqual(["a", "b"]);
-    expect(result.every((r) => r.depth === 0)).toBe(true);
+    expect(flatten(rows)).toEqual([
+      {
+        row: rows[0],
+        id: "a",
+        parentId: null,
+        depth: 0,
+        hasChildren: true,
+        hasLoadedChildren: true,
+        posInSet: 1,
+        setSize: 2
+      },
+      {
+        row: rows[1],
+        id: "b",
+        parentId: null,
+        depth: 0,
+        hasChildren: false,
+        hasLoadedChildren: false,
+        posInSet: 2,
+        setSize: 2
+      }
+    ]);
   });
 
   test("emits children of expanded parents in render order", () => {
@@ -33,9 +52,48 @@ describe("buildAndFlattenSpans", () => {
       { id: "a-1", parentId: "a" },
       { id: "a-2", parentId: "a" }
     ];
-    const result = flatten(rows, new Set(["a"]));
-    expect(result.map((r) => r.id)).toEqual(["a", "a-1", "a-2", "b"]);
-    expect(result.map((r) => r.depth)).toEqual([0, 1, 1, 0]);
+    expect(flatten(rows, new Set(["a"]))).toEqual([
+      {
+        row: rows[0],
+        id: "a",
+        parentId: null,
+        depth: 0,
+        hasChildren: true,
+        hasLoadedChildren: true,
+        posInSet: 1,
+        setSize: 2
+      },
+      {
+        row: rows[2],
+        id: "a-1",
+        parentId: "a",
+        depth: 1,
+        hasChildren: false,
+        hasLoadedChildren: false,
+        posInSet: 1,
+        setSize: 2
+      },
+      {
+        row: rows[3],
+        id: "a-2",
+        parentId: "a",
+        depth: 1,
+        hasChildren: false,
+        hasLoadedChildren: false,
+        posInSet: 2,
+        setSize: 2
+      },
+      {
+        row: rows[1],
+        id: "b",
+        parentId: null,
+        depth: 0,
+        hasChildren: false,
+        hasLoadedChildren: false,
+        posInSet: 2,
+        setSize: 2
+      }
+    ]);
   });
 
   test("walks deep trees", () => {
@@ -45,9 +103,48 @@ describe("buildAndFlattenSpans", () => {
       { id: "a-1-1", parentId: "a-1" },
       { id: "a-1-1-1", parentId: "a-1-1" }
     ];
-    const result = flatten(rows, new Set(["a", "a-1", "a-1-1"]));
-    expect(result.map((r) => r.id)).toEqual(["a", "a-1", "a-1-1", "a-1-1-1"]);
-    expect(result.map((r) => r.depth)).toEqual([0, 1, 2, 3]);
+    expect(flatten(rows, new Set(["a", "a-1", "a-1-1"]))).toEqual([
+      {
+        row: rows[0],
+        id: "a",
+        parentId: null,
+        depth: 0,
+        hasChildren: true,
+        hasLoadedChildren: true,
+        posInSet: 1,
+        setSize: 1
+      },
+      {
+        row: rows[1],
+        id: "a-1",
+        parentId: "a",
+        depth: 1,
+        hasChildren: true,
+        hasLoadedChildren: true,
+        posInSet: 1,
+        setSize: 1
+      },
+      {
+        row: rows[2],
+        id: "a-1-1",
+        parentId: "a-1",
+        depth: 2,
+        hasChildren: true,
+        hasLoadedChildren: true,
+        posInSet: 1,
+        setSize: 1
+      },
+      {
+        row: rows[3],
+        id: "a-1-1-1",
+        parentId: "a-1-1",
+        depth: 3,
+        hasChildren: false,
+        hasLoadedChildren: false,
+        posInSet: 1,
+        setSize: 1
+      }
+    ]);
   });
 
   test("flags hasChildren when actual children exist", () => {
@@ -56,24 +153,61 @@ describe("buildAndFlattenSpans", () => {
       { id: "b", parentId: null },
       { id: "a-1", parentId: "a" }
     ];
-    const result = flatten(rows);
-    const aRow = result.find((r) => r.id === "a")!;
-    const bRow = result.find((r) => r.id === "b")!;
-    expect(aRow.hasChildren).toBe(true);
-    expect(bRow.hasChildren).toBe(false);
+    expect(flatten(rows)).toEqual([
+      {
+        row: rows[0],
+        id: "a",
+        parentId: null,
+        depth: 0,
+        hasChildren: true,
+        hasLoadedChildren: true,
+        posInSet: 1,
+        setSize: 2
+      },
+      {
+        row: rows[1],
+        id: "b",
+        parentId: null,
+        depth: 0,
+        hasChildren: false,
+        hasLoadedChildren: false,
+        posInSet: 2,
+        setSize: 2
+      }
+    ]);
   });
 
   test("flags hasChildren when row says so even with no actual children", () => {
     const rows: TestSpan[] = [{ id: "a", parentId: null, hasChildren: true }];
-    const result = flatten(rows);
-    expect(result[0].hasChildren).toBe(true);
+    expect(flatten(rows)).toEqual([
+      {
+        row: rows[0],
+        id: "a",
+        parentId: null,
+        depth: 0,
+        hasChildren: true,
+        hasLoadedChildren: false,
+        posInSet: 1,
+        setSize: 1
+      }
+    ]);
   });
 
   test("does not recurse when expanded but no children loaded", () => {
     // Lazy-load case: row says it has children but they aren't in the list.
     const rows: TestSpan[] = [{ id: "a", parentId: null, hasChildren: true }];
-    const result = flatten(rows, new Set(["a"]));
-    expect(result.map((r) => r.id)).toEqual(["a"]);
+    expect(flatten(rows, new Set(["a"]))).toEqual([
+      {
+        row: rows[0],
+        id: "a",
+        parentId: null,
+        depth: 0,
+        hasChildren: true,
+        hasLoadedChildren: false,
+        posInSet: 1,
+        setSize: 1
+      }
+    ]);
   });
 
   test("drops orphans (parent id that doesn't appear in rows)", () => {
@@ -81,17 +215,39 @@ describe("buildAndFlattenSpans", () => {
       { id: "a", parentId: null },
       { id: "ghost", parentId: "missing" }
     ];
-    const result = flatten(rows);
-    expect(result.map((r) => r.id)).toEqual(["a"]);
+    expect(flatten(rows)).toEqual([
+      {
+        row: rows[0],
+        id: "a",
+        parentId: null,
+        depth: 0,
+        hasChildren: false,
+        hasLoadedChildren: false,
+        posInSet: 1,
+        setSize: 1
+      }
+    ]);
   });
 
   test("breaks cycles", () => {
-    const looped: TestSpan[] = [
-      { id: "a", parentId: "b" },
-      { id: "b", parentId: "a" }
+    // Duplicate id forms a cycle: the root "a" claims "a" as a child of itself.
+    // The recursive walk should bail at the duplicate, leaving just the root.
+    const rows: TestSpan[] = [
+      { id: "a", parentId: null },
+      { id: "a", parentId: "a" }
     ];
-    const result = flatten(looped, new Set(["a", "b"]));
-    expect(result.length).toBeLessThan(10);
+    expect(flatten(rows, new Set(["a"]))).toEqual([
+      {
+        row: rows[0],
+        id: "a",
+        parentId: null,
+        depth: 0,
+        hasChildren: true,
+        hasLoadedChildren: true,
+        posInSet: 1,
+        setSize: 1
+      }
+    ]);
   });
 
   test("sets posInSet and setSize per sibling group", () => {
@@ -102,13 +258,58 @@ describe("buildAndFlattenSpans", () => {
       { id: "b-1", parentId: "b" },
       { id: "b-2", parentId: "b" }
     ];
-    const result = flatten(rows, new Set(["b"]));
-    const a = result.find((r) => r.id === "a")!;
-    const b1 = result.find((r) => r.id === "b-1")!;
-    const b2 = result.find((r) => r.id === "b-2")!;
-    expect({ pos: a.posInSet, size: a.setSize }).toEqual({ pos: 1, size: 3 });
-    expect({ pos: b1.posInSet, size: b1.setSize }).toEqual({ pos: 1, size: 2 });
-    expect({ pos: b2.posInSet, size: b2.setSize }).toEqual({ pos: 2, size: 2 });
+    expect(flatten(rows, new Set(["b"]))).toEqual([
+      {
+        row: rows[0],
+        id: "a",
+        parentId: null,
+        depth: 0,
+        hasChildren: false,
+        hasLoadedChildren: false,
+        posInSet: 1,
+        setSize: 3
+      },
+      {
+        row: rows[1],
+        id: "b",
+        parentId: null,
+        depth: 0,
+        hasChildren: true,
+        hasLoadedChildren: true,
+        posInSet: 2,
+        setSize: 3
+      },
+      {
+        row: rows[3],
+        id: "b-1",
+        parentId: "b",
+        depth: 1,
+        hasChildren: false,
+        hasLoadedChildren: false,
+        posInSet: 1,
+        setSize: 2
+      },
+      {
+        row: rows[4],
+        id: "b-2",
+        parentId: "b",
+        depth: 1,
+        hasChildren: false,
+        hasLoadedChildren: false,
+        posInSet: 2,
+        setSize: 2
+      },
+      {
+        row: rows[2],
+        id: "c",
+        parentId: null,
+        depth: 0,
+        hasChildren: false,
+        hasLoadedChildren: false,
+        posInSet: 3,
+        setSize: 3
+      }
+    ]);
   });
 
   test("preserves input order among siblings", () => {
@@ -117,7 +318,38 @@ describe("buildAndFlattenSpans", () => {
       { id: "a", parentId: null },
       { id: "m", parentId: null }
     ];
-    expect(flatten(rows).map((r) => r.id)).toEqual(["z", "a", "m"]);
+    expect(flatten(rows)).toEqual([
+      {
+        row: rows[0],
+        id: "z",
+        parentId: null,
+        depth: 0,
+        hasChildren: false,
+        hasLoadedChildren: false,
+        posInSet: 1,
+        setSize: 3
+      },
+      {
+        row: rows[1],
+        id: "a",
+        parentId: null,
+        depth: 0,
+        hasChildren: false,
+        hasLoadedChildren: false,
+        posInSet: 2,
+        setSize: 3
+      },
+      {
+        row: rows[2],
+        id: "m",
+        parentId: null,
+        depth: 0,
+        hasChildren: false,
+        hasLoadedChildren: false,
+        posInSet: 3,
+        setSize: 3
+      }
+    ]);
   });
 
   test("collapsed parent hides its descendants but state persists for re-expand", () => {
@@ -126,12 +358,54 @@ describe("buildAndFlattenSpans", () => {
       { id: "a-1", parentId: "a" },
       { id: "a-1-1", parentId: "a-1" }
     ];
-    // Both a and a-1 expanded — but if a is collapsed, a-1's children should
-    // not appear either.
-    const allExpanded = new Set(["a", "a-1"]);
-    expect(flatten(rows, allExpanded).map((r) => r.id)).toEqual(["a", "a-1", "a-1-1"]);
 
-    const aCollapsed = new Set(["a-1"]); // a-1 still in set but a hidden
-    expect(flatten(rows, aCollapsed).map((r) => r.id)).toEqual(["a"]);
+    // Both a and a-1 expanded — full subtree visible.
+    expect(flatten(rows, new Set(["a", "a-1"]))).toEqual([
+      {
+        row: rows[0],
+        id: "a",
+        parentId: null,
+        depth: 0,
+        hasChildren: true,
+        hasLoadedChildren: true,
+        posInSet: 1,
+        setSize: 1
+      },
+      {
+        row: rows[1],
+        id: "a-1",
+        parentId: "a",
+        depth: 1,
+        hasChildren: true,
+        hasLoadedChildren: true,
+        posInSet: 1,
+        setSize: 1
+      },
+      {
+        row: rows[2],
+        id: "a-1-1",
+        parentId: "a-1",
+        depth: 2,
+        hasChildren: false,
+        hasLoadedChildren: false,
+        posInSet: 1,
+        setSize: 1
+      }
+    ]);
+
+    // a-1 still in expandedIds but a is collapsed — only a should render. The
+    // a-1 expand state is preserved for when the user re-expands a.
+    expect(flatten(rows, new Set(["a-1"]))).toEqual([
+      {
+        row: rows[0],
+        id: "a",
+        parentId: null,
+        depth: 0,
+        hasChildren: true,
+        hasLoadedChildren: true,
+        posInSet: 1,
+        setSize: 1
+      }
+    ]);
   });
 });

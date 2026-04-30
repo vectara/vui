@@ -64,7 +64,7 @@ export const Spans = () => {
           const KindIcon = KIND_ICON[row.kind];
           return (
             <VuiFlexContainer alignItems="center" spacing="xs">
-              <VuiFlexItem grow={false}>
+              <VuiFlexItem grow={false} shrink={false}>
                 <VuiIcon size="s" color="subdued">
                   <KindIcon />
                 </VuiIcon>

@@ -85,38 +85,40 @@ export const VuiSpans = <T extends SpansRow>({
   const handleToggle = useCallback(
     (row: T, id: string, hasChildren: boolean, hasLoadedChildren: boolean) => {
       const isCurrentlyExpanded = expandedIds.has(id);
-      const next = new Set(expandedIds);
+      const nextExpandedIds = new Set(expandedIds);
 
       if (isCurrentlyExpanded) {
-        next.delete(id);
-        onExpandedIdsChange(next);
+        nextExpandedIds.delete(id);
+        onExpandedIdsChange(nextExpandedIds);
         return;
       }
 
-      next.add(id);
-      onExpandedIdsChange(next);
+      nextExpandedIds.add(id);
+      onExpandedIdsChange(nextExpandedIds);
 
+      // Only fire the consumer fetch when the row claims to have children
+      // (`hasChildren`) but none are present in the rows list yet.
       const needsFetch = hasChildren && !hasLoadedChildren && Boolean(onExpand);
       if (!needsFetch) return;
 
-      const tokens = fetchTokensRef.current;
-      const token = (tokens.get(id) ?? 0) + 1;
-      tokens.set(id, token);
+      const pendingFetchTokens = fetchTokensRef.current;
+      const currentFetchToken = (pendingFetchTokens.get(id) ?? 0) + 1;
+      pendingFetchTokens.set(id, currentFetchToken);
 
       setInternalLoadingIds((prev) => {
-        const set = new Set(prev);
-        set.add(id);
-        return set;
+        const nextLoadingIds = new Set(prev);
+        nextLoadingIds.add(id);
+        return nextLoadingIds;
       });
 
       const clearLoading = () => {
         // Only clear if our token is still the latest — otherwise a newer
         // fetch is in flight and owns the loading state.
-        if (tokens.get(id) !== token) return;
+        if (pendingFetchTokens.get(id) !== currentFetchToken) return;
         setInternalLoadingIds((prev) => {
-          const set = new Set(prev);
-          set.delete(id);
-          return set;
+          const nextLoadingIds = new Set(prev);
+          nextLoadingIds.delete(id);
+          return nextLoadingIds;
         });
       };
 
