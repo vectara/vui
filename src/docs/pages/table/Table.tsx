@@ -33,6 +33,7 @@ export const Table = () => {
   const [isHeaderSticky, setIsHeaderSticky] = useState(false);
   const [isResponsive, setIsResponsive] = useState(true);
   const [hasExpandableRows, setHasExpandableRows] = useState(true);
+  const [showSelectedCount, setShowSelectedCount] = useState(true);
 
   // Table state
   const [isLoading, setIsLoading] = useState(true);
@@ -276,6 +277,7 @@ export const Table = () => {
         selectedRows,
         isRowSelectable: (row: Person) => row.status === "Active",
         onSelectRow: (selectedRows: Person[]) => setSelectedRows(selectedRows),
+        showSelectedCount,
         bulkActions: [
           {
             label: "Edit",
@@ -385,6 +387,14 @@ export const Table = () => {
             label="Has expandable rows"
             checked={hasExpandableRows}
             onChange={(e) => setHasExpandableRows(e.target.checked)}
+          />
+        </VuiFlexItem>
+
+        <VuiFlexItem shrink={false}>
+          <VuiToggle
+            label="Show selected count"
+            checked={showSelectedCount}
+            onChange={(e) => setShowSelectedCount(e.target.checked)}
           />
         </VuiFlexItem>
       </VuiFlexContainer>

@@ -66,6 +66,7 @@ type Selection<T> = {
   isRowSelectable?: (row: T) => boolean;
   onSelectRow?: (selectedRows: T[]) => void;
   selectedRows?: T[];
+  showSelectedCount?: boolean;
 };
 
 type Search = TextInputProps;
@@ -108,7 +109,7 @@ export const VuiTable = <T extends Row>({
   const [sortDirection, setSortDirection] = useState<"asc" | "desc" | "none">(defaultSortDirection ?? "none");
   const [expandedRowIds, setExpandedRowIds] = useState<Set<string>>(new Set());
 
-  const { bulkActions, isRowSelectable, onSelectRow, selectedRows } = selection || {};
+  const { bulkActions, isRowSelectable, onSelectRow, selectedRows, showSelectedCount } = selection || {};
   const { value: searchValue } = search || {};
 
   const handleSort = (columnName: string, direction: "asc" | "desc" | "none") => {
@@ -351,6 +352,15 @@ export const VuiTable = <T extends Row>({
             {onSelectRow && isResponsive && (
               <VuiFlexItem grow={false} shrink={false} className="vuiTableHeader__responsiveSelectAllCheckbox">
                 <VuiCheckbox label="Select all" {...selectAllCheckboxProps} />
+              </VuiFlexItem>
+            )}
+
+            {/* Selected count */}
+            {showSelectedCount && selectedRows && selectedRows.length > 0 && (
+              <VuiFlexItem grow={false} shrink={false}>
+                <VuiText size="s">
+                  <p>{selectedRows.length} selected</p>
+                </VuiText>
               </VuiFlexItem>
             )}
 
