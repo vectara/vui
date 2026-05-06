@@ -61,6 +61,8 @@ import { InfoListItemType, VuiInfoListItem } from "./infoList/InfoListItem";
 import { VuiInfoMenu } from "./infoMenu/InfoMenu";
 import { VuiInfoTable, InfoTableColumnAlign, InfoTableRow, InfoTableRowType } from "./infoTable/InfoTable";
 import { VuiInProgress } from "./inProgress/InProgress";
+import { VuiKvTable } from "./kvTable/KvTable";
+import { KvTableItem, KvTableItems, KvTablePadding, KvTableAlign } from "./kvTable/types";
 import { VuiLink, VuiLinkInternal } from "./link/Link";
 import { LinkProps } from "./link/types";
 import { VuiList } from "./list/List";
@@ -133,6 +135,10 @@ export type {
   InfoTableColumnAlign,
   InfoTableRow,
   InfoTableRowType,
+  KvTableAlign,
+  KvTableItem,
+  KvTableItems,
+  KvTablePadding,
   LinkProps,
   MenuItem,
   OptionListItem,
@@ -217,6 +223,7 @@ export {
   VuiInfoMenu,
   VuiInfoTable,
   VuiInfoTooltip,
+  VuiKvTable,
   VuiInProgress,
   VuiItemsInput,
   VuiLabel,

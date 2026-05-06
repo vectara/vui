@@ -1,0 +1,85 @@
+.vuiKvTable {
+  width: 100%;
+  table-layout: auto;
+  border: 1px solid var(--vui-color-border-light);
+
+  thead {
+    background-color: var(--vui-color-light-shade);
+    border-bottom: 1px solid var(--vui-color-border-light);
+  }
+
+  thead th {
+    font-size: $fontSizeSmall;
+    font-weight: $fontWeightBold;
+    padding: $sizeXs $sizeS;
+    text-align: left;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--vui-color-border-light);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  td {
+    font-size: $fontSizeStandard;
+  }
+}
+
+// Key cell: row header, subdued color, natural (non-wrapping) width.
+.vuiKvTableCell--key {
+  color: var(--vui-color-subdued-shade);
+  white-space: nowrap;
+  font-weight: $fontWeightNormal;
+  font-size: $fontSizeStandard;
+  text-align: left;
+}
+
+// Value cell: consumes all remaining width in auto-layout table.
+.vuiKvTableCell--value {
+  width: 100%;
+}
+
+.vuiKvTable--paddingXxs {
+  td,
+  .vuiKvTableCell--key {
+    padding: $sizeXxs $sizeS;
+  }
+}
+
+.vuiKvTable--paddingXs {
+  td,
+  .vuiKvTableCell--key {
+    padding: $sizeXs $sizeS;
+  }
+}
+
+.vuiKvTable--paddingS {
+  td,
+  .vuiKvTableCell--key {
+    padding: $sizeS $sizeS;
+  }
+}
+
+.vuiKvTable--alignTop {
+  td,
+  .vuiKvTableCell--key {
+    vertical-align: top;
+  }
+}
+
+.vuiKvTable--alignMiddle {
+  td,
+  .vuiKvTableCell--key {
+    vertical-align: middle;
+  }
+}
+
+.vuiKvTable--alignBottom {
+  td,
+  .vuiKvTableCell--key {
+    vertical-align: bottom;
+  }
+}
