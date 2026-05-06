@@ -14,6 +14,7 @@ import { complexConfigurationButton } from "./pages/complexConfigurationButton";
 import { copyButton } from "./pages/copyButton";
 import { datePicker } from "./pages/datePicker";
 import { drawer } from "./pages/drawer";
+import { durationBar } from "./pages/durationBar";
 import { errorBoundary } from "./pages/errorBoundary";
 import { flex } from "./pages/flex";
 import { formGroup } from "./pages/formGroup";
@@ -111,7 +112,7 @@ export const categories: Category[] = [
   },
   {
     name: "Content",
-    pages: [badge, status, callout, code, icon, image, inProgress, spinner, skeleton, stat, progressBar, text, tooltip]
+    pages: [badge, status, callout, code, durationBar, icon, image, inProgress, progressBar, spinner, skeleton, stat, text, tooltip]
   },
   {
     name: "Form",

@@ -1,0 +1,45 @@
+@use "sass:map";
+
+.vuiDurationBar {
+  position: relative;
+  width: 100%;
+  height: $sizeS;
+  border-radius: $sizeS;
+}
+
+.vuiDurationBar__bar {
+  position: absolute;
+  height: 100%;
+  border-radius: $sizeXxs;
+  transition: all $transitionSpeed;
+}
+
+// Color
+$color: (
+  accent: (
+    "background-color": linear-gradient(to top, var(--vui-color-accent-shade), var(--vui-color-accent-light-shade))
+  ),
+  primary: (
+    "background-color": linear-gradient(to top, var(--vui-color-primary-shade), var(--vui-color-primary-light-shade))
+  ),
+  success: (
+    "background-color": linear-gradient(to top, var(--vui-color-success-shade), var(--vui-color-success-light-shade))
+  ),
+  warning: (
+    "background-color": linear-gradient(to top, var(--vui-color-warning-shade), var(--vui-color-warning-light-shade))
+  ),
+  danger: (
+    "background-color": linear-gradient(to top, var(--vui-color-danger-shade), var(--vui-color-danger-light-shade))
+  ),
+  neutral: (
+    "background-color": linear-gradient(to top, var(--vui-color-dark-shade), var(--vui-color-medium-shade))
+  )
+);
+
+@each $colorName, $colorValue in $color {
+  .vuiDurationBar--#{$colorName} {
+    .vuiDurationBar__bar {
+      background-image: #{map.get($colorValue, "background-color")};
+    }
+  }
+}
