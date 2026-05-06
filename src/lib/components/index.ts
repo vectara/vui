@@ -27,6 +27,7 @@ import { VuiCopyButton } from "./copyButton/CopyButton";
 import { VuiDatePicker } from "./datePicker/DatePicker";
 import { VuiDateRangePicker } from "./datePicker/DateRangePicker";
 import { VuiDrawer } from "./drawer/Drawer";
+import { VuiDurationBar } from "./durationBar/DurationBar";
 import { VuiErrorBoundary } from "./errorBoundary/ErrorBoundary";
 import { VuiFlexContainer } from "./flex/FlexContainer";
 import { VuiFlexItem } from "./flex/FlexItem";
@@ -208,6 +209,7 @@ export {
   VuiDatePicker,
   VuiDateRangePicker,
   VuiDrawer,
+  VuiDurationBar,
   VuiErrorBoundary,
   VuiFlexContainer,
   VuiFlexItem,
